@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Button, Result, Tooltip } from 'antd';
 import { CloseCircleFilled, LoadingOutlined } from '@ant-design/icons';
 import AuthModal from '../components/auth-modal/AuthModal';
+import Layout from '../components/layout/Layout';
 import { connect } from 'react-redux';
 import stylesheet from '../pages-helpers/starred-certificates/StarredCertificates.styles';
 import { bindActionCreators } from "redux";
@@ -9,8 +10,9 @@ import { getStarredCertificates, addStarredCertificate, removeStarredCertificate
 import { setUser } from '../components/auth-modal/AuthModal.actions';
 import { verifyMe } from '../components/auth-modal/AuthModal.service';
 import showNotification from '../shared/showNotification';
+import { withRouter } from 'next/router';
 
-const StarredCertificates = ({ history, setUser, user, location }) => {
+const StarredCertificates = ({ router, setUser, user }) => {
   const [loading, setLoading] = useState(true);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [starred, setStarred] = useState([]);
@@ -67,7 +69,7 @@ const StarredCertificates = ({ history, setUser, user, location }) => {
         setLoading(true);
         res = await verifyMe();
         setUser(res.data);
-        const cid = new URLSearchParams(location.search).get("cid");
+        const { query: { cid } } = router;
         if (cid) {
           await addStarredCertificate(cid);
         }
@@ -79,7 +81,7 @@ const StarredCertificates = ({ history, setUser, user, location }) => {
         fetchStarred(res.data);
       }
     } else {
-      history.goBack();
+      router.back();
     }
   }
 
@@ -99,7 +101,7 @@ const StarredCertificates = ({ history, setUser, user, location }) => {
   }
 
   const showCertificate = uuid => {
-    history.push(`/view-certificate/${uuid}`);
+    router.push(`/view-certificate/${uuid}`);
     // window.open(`${window.location.origin}/view-certificate/${uuid}`)
   }
 
@@ -143,12 +145,14 @@ const StarredCertificates = ({ history, setUser, user, location }) => {
   }
 
   return (
-    <div className="main-container">
-      <div className="navbar-placeholder" />
-      <div className={classes['certificates-container']}>
-        {certificatesJSX}
-      </div>
-    </div>
+    <Layout>
+        <div className="main-container">
+          <div className="navbar-placeholder" />
+          <div className={classes['certificates-container']}>
+            {certificatesJSX}
+          </div>
+        </div>
+    </Layout>
   );
 };
 
@@ -158,4 +162,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ setUser }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(StarredCertificates);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(StarredCertificates));

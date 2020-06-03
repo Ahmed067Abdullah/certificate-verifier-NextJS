@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Form, Input, Button, Card, DatePicker } from 'antd';
 import { Link } from 'next/link';
+import Layout from '../components/layout/Layout';
 import { awardCertificateFormFields as formFields } from '../shared/formFields';
 import { layout, tailLayout } from '../shared/formLayout';
 import stylesheet from '../pages-helpers/award-certificate/AwardCertificate.styles';
@@ -15,15 +16,17 @@ const AwardCertificate = () => {
   const formEl = useRef(null);
 
   useEffect(() => {
-    checkCompany(setCompanyLoading, setComapnyNotRegistered, setCompany);
-
-    window.ethereum.on('accountsChanged', () => {
-      setCompanyLoading(true);
+    if (window.ethereum) {
       checkCompany(setCompanyLoading, setComapnyNotRegistered, setCompany);
-    });
 
-    return () => {
-      window.ethereum.removeAllListeners();
+      window.ethereum.on('accountsChanged', () => {
+        setCompanyLoading(true);
+        checkCompany(setCompanyLoading, setComapnyNotRegistered, setCompany);
+      });
+
+      return () => {
+        window.ethereum.removeAllListeners();
+      }
     }
   }, []);
 
@@ -48,44 +51,50 @@ const AwardCertificate = () => {
 
   const classes = stylesheet();
 
+  if (typeof window !== 'undefined' && typeof window.ethereum === 'undefined') {
+    return <p>No meta mask</p>
+  }
+
   return (
-    <div className="main-container">
-      <div className="navbar-placeholder" />
-      <Card
-        className={classes['register-company-card']}
-        title="Award Certificate"
-        loading={comapnyLoading}>
-        {comapnyNotRegistered
-          ? <p className={classes['cmp-unregistered']}>
-            Sorry, the selected Ethereum address is not associated with any company.
+    <Layout>
+      <div className="main-container">
+        <div className="navbar-placeholder" />
+        <Card
+          className={classes['register-company-card']}
+          title="Award Certificate"
+          loading={comapnyLoading}>
+          {comapnyNotRegistered
+            ? <p className={classes['cmp-unregistered']}>
+              Sorry, the selected Ethereum address is not associated with any company.
           <span>Click <Link href="/register-company">here</Link> to register your comapny</span>
-          </p>
-          : null}
-        <Form
-          {...layout}
-          name="register-comapny"
-          onFinish={onFinish}
-          ref={formEl}
-        >
-          {formFields.map(field => <Form.Item
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            rules={field.rules}
+            </p>
+            : null}
+          <Form
+            {...layout}
+            name="register-comapny"
+            onFinish={onFinish}
+            ref={formEl}
           >
-            {field.type === 'date'
-              ? <DatePicker.RangePicker style={{ width: '100%' }} disabled={isSubmitting || comapnyNotRegistered} />
-              : <Input disabled={isSubmitting || comapnyNotRegistered} />}
-          </Form.Item>)}
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={comapnyNotRegistered}>
-              Submit
+            {formFields.map(field => <Form.Item
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              rules={field.rules}
+            >
+              {field.type === 'date'
+                ? <DatePicker.RangePicker style={{ width: '100%' }} disabled={isSubmitting || comapnyNotRegistered} />
+                : <Input disabled={isSubmitting || comapnyNotRegistered} />}
+            </Form.Item>)}
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={comapnyNotRegistered}>
+                Submit
             </Button>
-            {comapny['0'] ? <p className={classes['company-name']}>from <span>{comapny['0']}</span></p> : ''}
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
+              {comapny['0'] ? <p className={classes['company-name']}>from <span>{comapny['0']}</span></p> : ''}
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+    </Layout>
   )
 }
 

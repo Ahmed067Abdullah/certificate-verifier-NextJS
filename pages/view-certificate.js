@@ -9,9 +9,10 @@ import Certificate from '../components/certificate/Certificate';
 import stylesheet from '../pages-helpers/view-certificate/ViewCertificate.styles';
 import { addStarredCertificate } from '../pages-helpers/starred-certificates/StarredCertificates.service';
 import { verifyMe } from '../components/auth-modal/AuthModal.service';
+import { withRouter } from 'next/router';
 
 
-const ViewCertificate = ({ match, history }) => {
+const ViewCertificate = ({ router }) => {
   const [certificateLoading, setCertificateLoading] = useState(true);
   const [starLoading, setStarLoading] = useState(false);
   const [certificate, setCertificate] = useState({});
@@ -23,7 +24,7 @@ const ViewCertificate = ({ match, history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { params: { uuid } } = match;
+  const { query: { uuid } } = router;
 
   const addToStarredHandler = async () => {
     setStarLoading(true);
@@ -33,7 +34,7 @@ const ViewCertificate = ({ match, history }) => {
         await addStarredCertificate(uuid);
         showNotification('Success', 'Certificate starred successfully');
       } else {
-        history.push(`/starred-certificates?cid=${uuid}`)
+        router.push(`/starred-certificates?cid=${uuid}`)
       }
     }
     catch (e) {
@@ -41,7 +42,7 @@ const ViewCertificate = ({ match, history }) => {
       if (e && e.response && e.response.data.error === 'Certificate is already starred') {
         showNotification('Error', e, true);
       } else {
-        history.push(`/starred-certificates?cid=${uuid}`)
+        router.push(`/starred-certificates?cid=${uuid}`)
       }
     }
     finally {
@@ -97,7 +98,7 @@ const ViewCertificate = ({ match, history }) => {
 
   return <div className="main-container">
     <div className="navbar-placeholder" />
-    <Button type="primary" onClick={() => history.goBack()} className={classes['back-btn']}>
+    <Button type="primary" onClick={() => router.back()} className={classes['back-btn']}>
       <LeftOutlined />
       Back
     </Button>
@@ -126,4 +127,4 @@ const ViewCertificate = ({ match, history }) => {
   </div>
 }
 
-export default ViewCertificate;
+export default withRouter(ViewCertificate);

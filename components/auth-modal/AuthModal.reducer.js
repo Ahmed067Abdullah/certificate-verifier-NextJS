@@ -1,4 +1,5 @@
 import actionTypes from "./AuthModal.types";
+import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
   id: '',
@@ -8,6 +9,8 @@ const initialState = {
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case HYDRATE:
+      return { ...state };
     case actionTypes.SET_USER:
       return {
         ...state,

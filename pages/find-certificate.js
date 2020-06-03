@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { Form, Input, Button, Card } from 'antd';
+import Layout from '../components/layout/Layout';
 import { findCertificateFields as formFields } from '../shared/formFields';
 import { layout, tailLayout } from '../shared/formLayout';
 import stylesheet from '../pages-helpers/find-certificate/FindCertificate.styles';
 import { getCertificate } from '../pages-helpers/view-certificate/ViewCertificate.service';
 import showNotification from '../shared/showNotification';
+import { withRouter } from 'next/router';
 // import { SketchPicker } from 'react-color';
 
-const QueryCertificate = ({ history }) => {
+const QueryCertificate = ({ router }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formEl = useRef(null);
 
@@ -23,7 +25,7 @@ const QueryCertificate = ({ history }) => {
             },
           ]);
         } else {
-          history.push(`/view-certificate/${values.uuid}`);
+          router.push(`/view-certificate/${values.uuid}`);
           // window.open(`${window.location.origin}/view-certificate/${values.uuid}`)
         }
         console.log(res);
@@ -39,34 +41,36 @@ const QueryCertificate = ({ history }) => {
 
   const classes = stylesheet();
   return (
-    <div className="main-container">
-      <div className="navbar-placeholder" />
-      <Card
-        className={classes['card']}
-        title="Find Certificate">
-        <Form
-          {...layout}
-          name="find-certificate"
-          onFinish={onFinish}
-          ref={formEl}
-        >
-          {formFields.map(field => <Form.Item
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            rules={field.rules}
+    <Layout>
+      <div className="main-container">
+        <div className="navbar-placeholder" />
+        <Card
+          className={classes['card']}
+          title="Find Certificate">
+          <Form
+            {...layout}
+            name="find-certificate"
+            onFinish={onFinish}
+            ref={formEl}
           >
-            <Input disabled={isSubmitting} />
-          </Form.Item>)}
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" loading={isSubmitting}>
-              Submit
+            {formFields.map(field => <Form.Item
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              rules={field.rules}
+            >
+              <Input disabled={isSubmitting} />
+            </Form.Item>)}
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" loading={isSubmitting}>
+                Submit
             </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+    </Layout>
   )
 }
 
-export default QueryCertificate;
+export default withRouter(QueryCertificate);

@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import { Row, Col, Card, Button, Result } from 'antd';
+import Layout from '../components/layout/Layout';
 import stylesheet from '../pages-helpers/issued-certificates/IssuedCertificates.styles';
 import { getIssuedCertificates } from '../pages-helpers/issued-certificates/IssuedCertificates.service';
 import showNotification from '../shared/showNotification';
+import { withRouter } from 'next/router';
 
-const IssuedCertificates = ({ history }) => {
+const IssuedCertificates = ({ router }) => {
 
   const [loading, setLoading] = useState(true);
   const [certificates, setCertificates] = useState([]);
 
   useEffect(() => {
-    callGetIssuedCertificates();
-
-    window.ethereum.on('accountsChanged', () => {
-      setLoading(true);
+    if (window.ethereum) {
       callGetIssuedCertificates();
-    });
 
-    return () => {
-      window.ethereum.removeAllListeners();
+      window.ethereum.on('accountsChanged', () => {
+        setLoading(true);
+        callGetIssuedCertificates();
+      });
+
+      return () => {
+        window.ethereum.removeAllListeners();
+      }
     }
   }, []);
 
@@ -38,7 +42,7 @@ const IssuedCertificates = ({ history }) => {
   }
 
   const showCertificate = uuid => {
-    history.push(`/view-certificate/${uuid}`);
+    router.push(`/view-certificate/${uuid}`);
     // window.open(`${window.location.origin}/view-certificate/${uuid}`)
   }
 
@@ -60,24 +64,33 @@ const IssuedCertificates = ({ history }) => {
     </Col>);
   }
 
+  if (typeof window !== 'undefined' && typeof window.ethereum === 'undefined') {
+    return <p>No meta mask</p>
+  }
+
   return (
-    <div className="main-container">
-      <div className="navbar-placeholder" />
-      <div className={classes['certificates-container']}>
-        {certificatesJSX
-          ? <Row gutter={[16, 24]}>
-            {certificatesJSX}
-          </Row>
-          : <div className={classes['empty-state-container']}>
-            <Result
-              status={404}
-              title='No certificate found'
-              subTitle={<p>Click <Link href="/award-certificate">here</Link> to issue your first certificate</p>}
-            />
-          </div>}
+    <Layout>
+      <div className="main-container">
+        <div className="navbar-placeholder" />
+        <div className={classes['certificates-container']}>
+          {certificatesJSX
+            ? <Row gutter={[16, 24]}>
+              {certificatesJSX}
+            </Row>
+            : <div className={classes['empty-state-container']}>
+              <Result
+                status={404}
+                title='No certificate found'
+                subTitle={<p>Click
+                  <Link href="/award-certificate">
+                    <a>here</a>
+                  </Link> to issue your first certificate</p>}
+              />
+            </div>}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
-export default IssuedCertificates;
+export default withRouter(IssuedCertificates);
