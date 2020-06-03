@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Form, Input, Button, Card, DatePicker } from 'antd';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import { awardCertificateFormFields as formFields } from '../shared/formFields';
 import { layout, tailLayout } from '../shared/formLayout';
-import stylesheet from '../pages-helpers/award-certificate/AwardCertificate.styles';
 import { awardCertificate, checkCompany } from '../pages-helpers/award-certificate/AwardCertificate.service';
 import showNotification from '../shared/showNotification';
 
@@ -49,8 +48,6 @@ const AwardCertificate = () => {
     }
   };
 
-  const classes = stylesheet();
-
   if (typeof window !== 'undefined' && typeof window.ethereum === 'undefined') {
     return <p>No meta mask</p>
   }
@@ -60,11 +57,11 @@ const AwardCertificate = () => {
       <div className="main-container">
         <div className="navbar-placeholder" />
         <Card
-          className={classes['register-company-card']}
+          className='register-company-card'
           title="Award Certificate"
           loading={comapnyLoading}>
           {comapnyNotRegistered
-            ? <p className={classes['cmp-unregistered']}>
+            ? <p className='cmp-unregistered'>
               Sorry, the selected Ethereum address is not associated with any company.
           <span>Click <Link href="/register-company">here</Link> to register your comapny</span>
             </p>
@@ -89,11 +86,35 @@ const AwardCertificate = () => {
               <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={comapnyNotRegistered}>
                 Submit
             </Button>
-              {comapny['0'] ? <p className={classes['company-name']}>from <span>{comapny['0']}</span></p> : ''}
+              {comapny['0'] ? <p className='company-name'>from <span>{comapny['0']}</span></p> : ''}
             </Form.Item>
           </Form>
         </Card>
       </div>
+      <style jsx>{`
+       .company-name {
+        display: inline-block;
+        margin-bottom: 0;
+        margin-left: 7px;
+      }
+      .company-name > span {
+        font-weight: 600;
+      }
+      .cmp-unregistered {
+        font-size: 16px;
+        color: #ff4d4f;
+        font-weight: 500;
+        text-align: center;
+      }
+      .cmp-unregistered > span {
+        color: rgba(0, 0, 0, 0.65);
+        display: block;
+      },
+      .register-company-card {
+        width: 700px;
+        margin: 100px auto 0;
+      }
+      `}</style>
     </Layout>
   )
 }

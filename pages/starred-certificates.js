@@ -4,7 +4,6 @@ import { CloseCircleFilled, LoadingOutlined } from '@ant-design/icons';
 import AuthModal from '../components/auth-modal/AuthModal';
 import Layout from '../components/layout/Layout';
 import { connect } from 'react-redux';
-import stylesheet from '../pages-helpers/starred-certificates/StarredCertificates.styles';
 import { bindActionCreators } from "redux";
 import { getStarredCertificates, addStarredCertificate, removeStarredCertificate } from '../pages-helpers/starred-certificates/StarredCertificates.service';
 import { setUser } from '../components/auth-modal/AuthModal.actions';
@@ -105,8 +104,6 @@ const StarredCertificates = ({ router, setUser, user }) => {
     // window.open(`${window.location.origin}/view-certificate/${uuid}`)
   }
 
-  const classes = stylesheet();
-
   let certificatesJSX;
   if (loading) {
     certificatesJSX = <Row gutter={[16, 24]}>
@@ -120,8 +117,8 @@ const StarredCertificates = ({ router, setUser, user }) => {
     certificatesJSX = <Row gutter={[16, 24]}>
       {starred.map(c => <Col span={6} key={c.uuid}>
         <Card style={{ 'position': 'relative' }}>
-          <p>Awarded to: <span className={classes['candidate-name']}>{c.candidateName}</span></p>
-          <div className={classes['icon-container']}>
+          <p>Awarded to: <span className='candidate-name'>{c.candidateName}</span></p>
+          <div className='icon-container'>
             {c.loading
               ? <LoadingOutlined />
               : <Tooltip placement="top" title="Remove from starred">
@@ -135,7 +132,7 @@ const StarredCertificates = ({ router, setUser, user }) => {
       </Col>)}
     </Row>;
   } else {
-    certificatesJSX = <div className={classes['empty-state-container']}>
+    certificatesJSX = <div className='empty-state-container'>
       <Result
         status={404}
         title='No certificate found'
@@ -146,12 +143,40 @@ const StarredCertificates = ({ router, setUser, user }) => {
 
   return (
     <Layout>
-        <div className="main-container">
-          <div className="navbar-placeholder" />
-          <div className={classes['certificates-container']}>
-            {certificatesJSX}
-          </div>
+      <div className="main-container">
+        <div className="navbar-placeholder" />
+        <div className='certificates-container'>
+          {certificatesJSX}
         </div>
+      </div>
+      <style jsx>{`
+      .certificates-container {
+        width: 100vw;
+        overflow-x: hidden;
+        padding: 16px 24px;
+        width: 100%;
+      }
+      .candidate-name {
+        font-weight: 500;
+      }
+      .empty-state-container {
+        align-items: center;
+        display: flex;
+        height: calc(100vh - 180px);
+        justify-content: center;
+      }
+      .icon-container {
+        position: absolute;
+        color: #1890ff;
+        font-size: 18px;
+        z-index: 2;
+        top: 7px;
+        right: 12px;
+      }
+      .icon-container .anticon-close-circle {
+        cursor: pointer;
+      },
+      `}</style>
     </Layout>
   );
 };

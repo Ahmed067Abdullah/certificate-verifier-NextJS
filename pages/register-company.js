@@ -3,7 +3,6 @@ import { Form, Input, Button, Card } from 'antd';
 import { registerCompanyFormFields as formFields } from '../shared/formFields';
 import Layout from '../components/layout/Layout';
 import { layout, tailLayout } from '../shared/formLayout';
-import stylesheet from '../pages-helpers/register-company/RegisterCompany.styles';
 import { registerCompany } from '../pages-helpers/register-company/RegisterCompany.service';
 import { checkCompany } from '../pages-helpers/award-certificate/AwardCertificate.service';
 import showNotification from '../shared/showNotification';
@@ -46,8 +45,6 @@ const RegisterCompany = () => {
       });
   };
 
-  const classes = stylesheet();
-
   const companyAlreadyRegistered = !comapnyNotRegistered;
 
   return (
@@ -55,11 +52,11 @@ const RegisterCompany = () => {
       <Layout>
         <div className="navbar-placeholder" />
         <Card
-          className={classes['register-company-card']}
+          className='register-company-card'
           title="Register Company"
           loading={comapnyLoading}>
           {companyAlreadyRegistered
-            ? <p className={classes['cmp-unregistered']}>
+            ? <p className='cmp-unregistered'>
               Sorry, the selected Ethereum address is already associated with a company.
           </p>
             : null}
@@ -86,6 +83,18 @@ const RegisterCompany = () => {
           </Form>
         </Card>
       </Layout>
+      <style jsx>{`
+      .cmp-unregistered {
+        font-size: 16px;
+        color: #ff4d4f;
+        font-weight: 500;
+        text-align: center;
+      }
+      .register-company-card {
+        width: 700px;
+        margin: 100px auto 0;
+      }
+      `}</style>
     </div>
   )
 }

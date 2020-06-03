@@ -3,7 +3,6 @@ import { Form, Input, Button, Card } from 'antd';
 import Layout from '../components/layout/Layout';
 import { findCertificateFields as formFields } from '../shared/formFields';
 import { layout, tailLayout } from '../shared/formLayout';
-import stylesheet from '../pages-helpers/find-certificate/FindCertificate.styles';
 import { getCertificate } from '../pages-helpers/view-certificate/ViewCertificate.service';
 import showNotification from '../shared/showNotification';
 import { withRouter } from 'next/router';
@@ -39,13 +38,12 @@ const QueryCertificate = ({ router }) => {
       })
   };
 
-  const classes = stylesheet();
   return (
     <Layout>
       <div className="main-container">
         <div className="navbar-placeholder" />
         <Card
-          className={classes['card']}
+          className="card"
           title="Find Certificate">
           <Form
             {...layout}
@@ -69,6 +67,12 @@ const QueryCertificate = ({ router }) => {
           </Form>
         </Card>
       </div>
+      <style jsx>{`
+      .card {
+        width: 700px;
+        margin: 100px auto 0;
+      }
+      `}</style>
     </Layout>
   )
 }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Row, Col, Card, Button, Result } from 'antd';
 import Layout from '../components/layout/Layout';
-import stylesheet from '../pages-helpers/issued-certificates/IssuedCertificates.styles';
 import { getIssuedCertificates } from '../pages-helpers/issued-certificates/IssuedCertificates.service';
 import showNotification from '../shared/showNotification';
 import { withRouter } from 'next/router';
@@ -46,8 +45,6 @@ const IssuedCertificates = ({ router }) => {
     // window.open(`${window.location.origin}/view-certificate/${uuid}`)
   }
 
-  const classes = stylesheet();
-
   let certificatesJSX;
   if (loading) {
     certificatesJSX = Array(8).fill().map((c, i) => <Col span={6} key={i}>
@@ -56,7 +53,7 @@ const IssuedCertificates = ({ router }) => {
   } else if (certificates.length) {
     certificatesJSX = certificates.map(c => <Col span={6} key={c.uuid}>
       <Card>
-        <p>Awarded to: <span className={classes['candidate-name']}>{c.candidateName}</span></p>
+        <p>Awarded to: <span className='candidate-name'>{c.candidateName}</span></p>
         <Button type="primary" onClick={() => showCertificate(c.uuid)}>
           View Certificate
         </Button>
@@ -72,12 +69,12 @@ const IssuedCertificates = ({ router }) => {
     <Layout>
       <div className="main-container">
         <div className="navbar-placeholder" />
-        <div className={classes['certificates-container']}>
+        <div className='certificates-container'>
           {certificatesJSX
             ? <Row gutter={[16, 24]}>
               {certificatesJSX}
             </Row>
-            : <div className={classes['empty-state-container']}>
+            : <div className='empty-state-container'>
               <Result
                 status={404}
                 title='No certificate found'
@@ -89,6 +86,23 @@ const IssuedCertificates = ({ router }) => {
             </div>}
         </div>
       </div>
+      <style jsx>{`
+      .certificates-container {
+        overflow-x: hidden;
+        padding: 16px 24px;
+        width: 100%;
+        max-width: 100vw;
+      }
+      .candidate-name {
+        font-weight: 500;
+      }
+      .empty-state-container {
+        align-items: center;
+        display: flex;
+        height: calc(100vh - 180px);
+        justify-content: center;
+      }
+      `}</style>
     </Layout>
   );
 };

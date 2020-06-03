@@ -124,6 +124,32 @@ const ViewCertificate = ({ router }) => {
             </Button>
           </div>
         </div>}
+    <style jsx>{`
+      .back-btn {
+        position: absolute;
+        top: 65px;
+        right: 20px;
+        padding-left: 10px;
+      }
+      .btns-container {
+        align-items: center;
+        display: flex;
+        margin: 20px 0;
+        justify-content: center;
+      }
+      .btns-container > button {
+        margin: 0 5px;
+      }
+      .not-found-container {
+        align-items: center;
+        display: flex;
+        height: calc(100vh - 60px);
+        justify-content: center;
+      }
+      .view-certificate-container {
+        padding-top: 20
+      }
+      `}</style>
   </div>
 }
 
