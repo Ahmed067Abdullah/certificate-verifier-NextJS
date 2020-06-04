@@ -27,7 +27,5 @@
     "uuid": "^8.1.0",
     "web3": "^1.2.8"
   },
-  "devDependencies": {
-    "@zeit/next-less": "^1.0.1"
-  }
+  "devDependencies": {}
 }
