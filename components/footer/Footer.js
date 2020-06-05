@@ -12,7 +12,7 @@ const Footer = () => {
             className='code-icon'
             target="_blank"
             rel="noopener noreferrer"
-            href="https://github.com/Ahmed067Abdullah/certificate-verifier-Solidity-MERN">
+            href="https://github.com/Ahmed067Abdullah/certificate-verifier-Solidity-NextJS">
             &lt;/&gt;
         </a>
         </Tooltip>
