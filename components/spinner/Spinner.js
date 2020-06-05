@@ -1,13 +1,19 @@
 import React from 'react';
 import { Spin } from 'antd';
-import stylesheet from './Spinner.styles';
 
 const Spinner = () => {
-  const classes = stylesheet();
-
   return (
-    <div className={classes['spinner-container']}>
+    <div className='spinner-container'>
       <Spin size="large" />
+      <style jsx>{`
+       .spinner-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      `}
+      </style>
     </div>
   )
 }

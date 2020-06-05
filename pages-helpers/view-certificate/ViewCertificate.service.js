@@ -4,9 +4,9 @@ export const getCertificate = uuid => {
   const { ethereum } = window;
   return new Promise((resolve, reject) => {
     const promise1 = contract.methods.getCertificate(uuid)
-      .call({ from: ethereum.selectedAddress });
+      .call();
     const promise2 = contract.methods.getCertificateAwarderDetails(uuid)
-      .call({ from: ethereum.selectedAddress });
+      .call();
     Promise.all([promise1, promise2])
       .then((res) => {
         resolve({
