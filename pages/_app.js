@@ -1,6 +1,10 @@
 import App from 'next/app';
 import React from 'react';
 import { wrapper } from "../store";
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import { verifyMe } from '../components/auth-modal/AuthModal.service';
+import { setUser, setChecked } from '../components/auth-modal/AuthModal.actions';
 import "./styles.css";
 
 class MyApp extends App {
@@ -8,6 +12,25 @@ class MyApp extends App {
 
   componentDidMount() {
     if (window.ethereum) {
+      this.setupApplication();
+    } else {
+      this.setState({ web3Status: 3 });
+    }
+  }
+
+  setupApplication = async () => {
+    const { setChecked, setUser } = this.props;
+    try {
+      let res = await verifyMe();
+      if (res) {
+        setUser({ ...res.data, checked: true });
+      } else {
+        setChecked(true);
+      }
+    } catch (e) {
+      setChecked(true);
+      localStorage.removeItem("certificate-verifier-token");
+    } finally {
       window.ethereum.enable()
         .then(() => {
           this.setState({ web3Status: 1 });
@@ -15,11 +38,8 @@ class MyApp extends App {
         .catch(() => {
           this.setState({ web3Status: 2 });
         })
-    } else {
-      this.setState({ web3Status: 3 });
     }
   }
-
 
   render() {
     const { Component } = this.props;
@@ -31,4 +51,6 @@ class MyApp extends App {
 
 }
 
-export default wrapper.withRedux(MyApp);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ setUser, setChecked }, dispatch);
+
+export default wrapper.withRedux(connect(null, mapDispatchToProps)(MyApp));

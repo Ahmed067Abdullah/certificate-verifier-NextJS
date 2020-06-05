@@ -4,7 +4,8 @@ import { HYDRATE } from 'next-redux-wrapper';
 const initialState = {
   id: '',
   name: '',
-  email: ''
+  email: '',
+  checked: false
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -15,6 +16,11 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         ...payload
+      };
+    case actionTypes.SET_CHECKED:
+      return {
+        ...state,
+        checked: payload
       };
     case actionTypes.LOGOUT:
       return {

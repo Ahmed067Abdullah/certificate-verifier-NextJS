@@ -5,6 +5,11 @@ export const setUser = payload => ({
   payload
 });
 
+export const setChecked = payload => ({
+  type: actionTypes.SET_CHECKED,
+  payload
+});
+
 export const logout = () => ({
   type: actionTypes.LOGOUT
 });

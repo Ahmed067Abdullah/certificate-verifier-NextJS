@@ -1,4 +1,5 @@
 export default {
   SET_USER: 'SET_USER',
+  SET_CHECKED: 'SET_CHECKED',
   LOGOUT: 'LOGOUT'
 }

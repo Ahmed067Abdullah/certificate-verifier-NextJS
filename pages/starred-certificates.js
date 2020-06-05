@@ -18,9 +18,11 @@ const StarredCertificates = ({ router, setUser, user }) => {
   const [toRemove, setToRemove] = useState([]);
 
   useEffect(() => {
-    fetchStarred();
+    if (user.checked) {
+      fetchStarred();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user.checked]);
 
   useEffect(() => {
     if (!loading && !user.id && !showAuthModal) {
@@ -67,7 +69,7 @@ const StarredCertificates = ({ router, setUser, user }) => {
       try {
         setLoading(true);
         res = await verifyMe();
-        setUser(res.data);
+        setUser({ ...res.data, checked: true });
         const { query: { cid } } = router;
         if (cid) {
           await addStarredCertificate(cid);
