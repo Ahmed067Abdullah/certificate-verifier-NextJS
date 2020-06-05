@@ -6,23 +6,28 @@ import { layout, tailLayout } from '../shared/formLayout';
 import { registerCompany } from '../pages-helpers/register-company/RegisterCompany.service';
 import { checkCompany } from '../pages-helpers/award-certificate/AwardCertificate.service';
 import showNotification from '../shared/showNotification';
+import ScreenContent from '../components/screen-content/ScreenContent';
 
-const RegisterCompany = () => {
+const RegisterCompany = ({ web3Status }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [comapnyLoading, setCompanyLoading] = useState(true);
   const [comapnyNotRegistered, setComapnyNotRegistered] = useState(true);
   const formEl = useRef(null);
 
   useEffect(() => {
-    checkCompany(setCompanyLoading, setComapnyNotRegistered);
-
-    window.ethereum.on('accountsChanged', () => {
-      setCompanyLoading(true);
+    if (window.ethereum) {
       checkCompany(setCompanyLoading, setComapnyNotRegistered);
-    });
 
-    return () => {
-      window.ethereum.removeAllListeners();
+      window.ethereum.on('accountsChanged', () => {
+        setCompanyLoading(true);
+        checkCompany(setCompanyLoading, setComapnyNotRegistered);
+      });
+
+      return () => {
+        window.ethereum.removeAllListeners();
+      }
+    } else {
+      setCompanyLoading(false);
     }
   }, []);
 
@@ -51,37 +56,40 @@ const RegisterCompany = () => {
     <div style={{ 'pointerEvents': isSubmitting ? 'none' : 'all' }} className="main-container">
       <Layout>
         <div className="navbar-placeholder" />
-        <Card
-          className='register-company-card'
-          title="Register Company"
-          loading={comapnyLoading}>
-          {companyAlreadyRegistered
-            ? <p className='cmp-unregistered'>
-              Sorry, the selected Ethereum address is already associated with a company.
-          </p>
-            : null}
-          <Form
-            {...layout}
-            name="register-comapny"
-            onFinish={onFinish}
-            ref={formEl}
-          >
-            {formFields.map(field => <Form.Item
-              key={field.name}
-              label={field.label}
-              name={field.name}
-              rules={field.rules}
-            >
-              <Input disabled={isSubmitting || companyAlreadyRegistered} />
-            </Form.Item>)}
+        <ScreenContent web3Status={web3Status}>
+          <div className='register-company-card'>
+            <Card
+              title="Register Company"
+              loading={comapnyLoading}>
+              {companyAlreadyRegistered
+                ? <p className='cmp-unregistered'>
+                  Sorry, the selected Ethereum address is already associated with a company.
+              </p>
+                : null}
+              <Form
+                {...layout}
+                name="register-comapny"
+                onFinish={onFinish}
+                ref={formEl}
+              >
+                {formFields.map(field => <Form.Item
+                  key={field.name}
+                  label={field.label}
+                  name={field.name}
+                  rules={field.rules}
+                >
+                  <Input disabled={isSubmitting || companyAlreadyRegistered} />
+                </Form.Item>)}
 
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={companyAlreadyRegistered}>
-                Submit
-        </Button>
-            </Form.Item>
-          </Form>
-        </Card>
+                <Form.Item {...tailLayout}>
+                  <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={companyAlreadyRegistered}>
+                    Submit
+              </Button>
+                </Form.Item>
+              </Form>
+            </Card>
+          </div>
+        </ScreenContent>
       </Layout>
       <style jsx>{`
       .cmp-unregistered {

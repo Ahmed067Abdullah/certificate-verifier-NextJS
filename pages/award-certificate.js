@@ -6,8 +6,9 @@ import { awardCertificateFormFields as formFields } from '../shared/formFields';
 import { layout, tailLayout } from '../shared/formLayout';
 import { awardCertificate, checkCompany } from '../pages-helpers/award-certificate/AwardCertificate.service';
 import showNotification from '../shared/showNotification';
+import ScreenContent from '../components/screen-content/ScreenContent';
 
-const AwardCertificate = () => {
+const AwardCertificate = ({ web3Status }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [comapny, setCompany] = useState('');
   const [comapnyLoading, setCompanyLoading] = useState(true);
@@ -48,48 +49,47 @@ const AwardCertificate = () => {
     }
   };
 
-  if (typeof window !== 'undefined' && typeof window.ethereum === 'undefined') {
-    return <p>No meta mask</p>
-  }
-
   return (
     <Layout>
       <div className="main-container">
         <div className="navbar-placeholder" />
-        <Card
-          className='register-company-card'
-          title="Award Certificate"
-          loading={comapnyLoading}>
-          {comapnyNotRegistered
-            ? <p className='cmp-unregistered'>
-              Sorry, the selected Ethereum address is not associated with any company.
+        <ScreenContent web3Status={web3Status}>
+          <div className='register-company-card'>
+            <Card
+              title="Award Certificate"
+              loading={comapnyLoading}>
+              {comapnyNotRegistered
+                ? <p className='cmp-unregistered'>
+                  Sorry, the selected Ethereum address is not associated with any company.
           <span>Click <Link href="/register-company">here</Link> to register your comapny</span>
-            </p>
-            : null}
-          <Form
-            {...layout}
-            name="register-comapny"
-            onFinish={onFinish}
-            ref={formEl}
-          >
-            {formFields.map(field => <Form.Item
-              key={field.name}
-              label={field.label}
-              name={field.name}
-              rules={field.rules}
-            >
-              {field.type === 'date'
-                ? <DatePicker.RangePicker style={{ width: '100%' }} disabled={isSubmitting || comapnyNotRegistered} />
-                : <Input disabled={isSubmitting || comapnyNotRegistered} />}
-            </Form.Item>)}
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={comapnyNotRegistered}>
-                Submit
+                </p>
+                : null}
+              <Form
+                {...layout}
+                name="register-comapny"
+                onFinish={onFinish}
+                ref={formEl}
+              >
+                {formFields.map(field => <Form.Item
+                  key={field.name}
+                  label={field.label}
+                  name={field.name}
+                  rules={field.rules}
+                >
+                  {field.type === 'date'
+                    ? <DatePicker.RangePicker style={{ width: '100%' }} disabled={isSubmitting || comapnyNotRegistered} />
+                    : <Input disabled={isSubmitting || comapnyNotRegistered} />}
+                </Form.Item>)}
+                <Form.Item {...tailLayout}>
+                  <Button type="primary" htmlType="submit" loading={isSubmitting} disabled={comapnyNotRegistered}>
+                    Submit
             </Button>
-              {comapny['0'] ? <p className='company-name'>from <span>{comapny['0']}</span></p> : ''}
-            </Form.Item>
-          </Form>
-        </Card>
+                  {comapny['0'] ? <p className='company-name'>from <span>{comapny['0']}</span></p> : ''}
+                </Form.Item>
+              </Form>
+            </Card>
+          </div>
+        </ScreenContent>
       </div>
       <style jsx>{`
        .company-name {
@@ -109,7 +109,7 @@ const AwardCertificate = () => {
       .cmp-unregistered > span {
         color: rgba(0, 0, 0, 0.65);
         display: block;
-      },
+      }
       .register-company-card {
         width: 700px;
         margin: 100px auto 0;

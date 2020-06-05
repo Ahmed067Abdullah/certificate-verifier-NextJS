@@ -1,0 +1,12 @@
+@import '~antd/dist/antd.css';
+body {
+  background-color: #fafafa;
+}
+
+.main-container {
+  padding-bottom: 100px;
+}
+
+.navbar-placeholder {
+  height: 48px;
+}

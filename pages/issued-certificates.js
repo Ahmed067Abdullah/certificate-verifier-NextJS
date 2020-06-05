@@ -5,14 +5,14 @@ import Layout from '../components/layout/Layout';
 import { getIssuedCertificates } from '../pages-helpers/issued-certificates/IssuedCertificates.service';
 import showNotification from '../shared/showNotification';
 import { withRouter } from 'next/router';
+import ScreenContent from '../components/screen-content/ScreenContent';
 
-const IssuedCertificates = ({ router }) => {
-
+const IssuedCertificates = ({ router, web3Status }) => {
   const [loading, setLoading] = useState(true);
   const [certificates, setCertificates] = useState([]);
 
   useEffect(() => {
-    if (window.ethereum) {
+    if (web3Status === 1) {
       callGetIssuedCertificates();
 
       window.ethereum.on('accountsChanged', () => {
@@ -61,30 +61,28 @@ const IssuedCertificates = ({ router }) => {
     </Col>);
   }
 
-  if (typeof window !== 'undefined' && typeof window.ethereum === 'undefined') {
-    return <p>No meta mask</p>
-  }
-
   return (
     <Layout>
       <div className="main-container">
         <div className="navbar-placeholder" />
-        <div className='certificates-container'>
-          {certificatesJSX
-            ? <Row gutter={[16, 24]}>
-              {certificatesJSX}
-            </Row>
-            : <div className='empty-state-container'>
-              <Result
-                status={404}
-                title='No certificate found'
-                subTitle={<p>Click
-                  <Link href="/award-certificate">
-                    <a>here</a>
-                  </Link> to issue your first certificate</p>}
-              />
-            </div>}
-        </div>
+        <ScreenContent web3Status={web3Status}>
+          <div className='certificates-container'>
+            {certificatesJSX
+              ? <Row gutter={[16, 24]}>
+                {certificatesJSX}
+              </Row>
+              : <div className='empty-state-container'>
+                <Result
+                  status={404}
+                  title='No certificate found'
+                  subTitle={<p>Click
+                <Link href="/award-certificate">
+                      <a>here</a>
+                    </Link> to issue your first certificate</p>}
+                />
+              </div>}
+          </div>
+        </ScreenContent>
       </div>
       <style jsx>{`
       .certificates-container {

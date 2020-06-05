@@ -42,30 +42,30 @@ const QueryCertificate = ({ router }) => {
     <Layout>
       <div className="main-container">
         <div className="navbar-placeholder" />
-        <Card
-          className="card"
-          title="Find Certificate">
-          <Form
-            {...layout}
-            name="find-certificate"
-            onFinish={onFinish}
-            ref={formEl}
-          >
-            {formFields.map(field => <Form.Item
-              key={field.name}
-              label={field.label}
-              name={field.name}
-              rules={field.rules}
+        <div className="card">
+          <Card title="Find Certificate">
+            <Form
+              {...layout}
+              name="find-certificate"
+              onFinish={onFinish}
+              ref={formEl}
             >
-              <Input disabled={isSubmitting} />
-            </Form.Item>)}
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" loading={isSubmitting}>
-                Submit
+              {formFields.map(field => <Form.Item
+                key={field.name}
+                label={field.label}
+                name={field.name}
+                rules={field.rules}
+              >
+                <Input disabled={isSubmitting} />
+              </Form.Item>)}
+              <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit" loading={isSubmitting}>
+                  Submit
             </Button>
-            </Form.Item>
-          </Form>
-        </Card>
+              </Form.Item>
+            </Form>
+          </Card>
+        </div>
       </div>
       <style jsx>{`
       .card {

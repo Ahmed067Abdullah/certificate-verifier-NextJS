@@ -4,15 +4,13 @@ import Link from 'next/link';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { callLogout } from '../auth-modal/AuthModal.service';
-import stylesheet from './NavBar.styles';
+import { withRouter } from 'next/router';
 
-const NavBar = ({ user, callLogout }) => {
-  const [current, setCurrent] = useState('home');
+const NavBar = ({ user, callLogout, router }) => {
+  const [current, setCurrent] = useState(router.pathname.slice(1));
 
-  const classes = stylesheet();
-  console.log(user)
   return (
-    <div className={classes['navbar-container']}>
+    <div className='navbar-container'>
       <Menu onClick={e => setCurrent(e.key)} selectedKeys={[current]} mode="horizontal">
         <Menu.Item key="home">
           <Link href="/home">
@@ -50,6 +48,13 @@ const NavBar = ({ user, callLogout }) => {
           </Menu.Item>
           : null}
       </Menu>
+      <style jsx>{`
+          .navbar-container {
+            position: fixed;
+            width: 100%;
+            z-index: 2;
+          }
+      `}</style>
     </div>
   );
 };
@@ -60,4 +65,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callLogout }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

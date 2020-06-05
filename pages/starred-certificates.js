@@ -175,7 +175,7 @@ const StarredCertificates = ({ router, setUser, user }) => {
       }
       .icon-container .anticon-close-circle {
         cursor: pointer;
-      },
+      }
       `}</style>
     </Layout>
   );
