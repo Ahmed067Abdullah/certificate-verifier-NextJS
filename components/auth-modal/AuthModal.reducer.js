@@ -24,7 +24,8 @@ const reducer = (state = initialState, { type, payload }) => {
       };
     case actionTypes.LOGOUT:
       return {
-        ...initialState
+        ...initialState,
+        checked: true
       };
     default:
       return state;
