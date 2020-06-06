@@ -15,8 +15,6 @@
 # production
 /build
 
-/config/infura.config.js
-
 # misc
 .DS_Store
 
