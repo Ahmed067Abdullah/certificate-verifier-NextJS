@@ -1,4 +1,5 @@
 import App from 'next/app';
+import Head from 'next/head'
 import React from 'react';
 import { wrapper } from "../store";
 import { connect } from 'react-redux';
@@ -45,7 +46,12 @@ class MyApp extends App {
     const { Component } = this.props;
     const { web3Status } = this.state;
     return (
-      <Component web3Status={web3Status} />
+      <>
+        <Head>
+          <title>Certificate Verifier</title>
+        </Head>
+        <Component web3Status={web3Status} />
+      </>
     );
   }
 

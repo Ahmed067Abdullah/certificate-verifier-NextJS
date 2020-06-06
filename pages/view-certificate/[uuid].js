@@ -124,11 +124,11 @@ const ViewCertificate = ({ router }) => {
             </Button>
             </div>
           </div>}
-      <style jsx>{`
+      <style global jsx>{`
       .back-btn {
         position: absolute;
         top: 65px;
-        right: 20px;
+        left: 20px;
         padding-left: 10px;
       }
       .btns-container {

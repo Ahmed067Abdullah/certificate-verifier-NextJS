@@ -18,16 +18,15 @@ const Footer = () => {
         </Tooltip>
         <Tooltip placement="top" title="Email">
           <a href="mailto:ahmed067abdullah@gmail.com">
-            <span><MailFilled /></span></a>
+            <MailFilled />
+          </a>
         </Tooltip>
         <Tooltip placement="top" title="Github">
           <a
             target="_blank"
             rel="noopener noreferrer"
             href="https://github.com/Ahmed067Abdullah">
-            <span>
-              <GithubFilled />
-            </span>
+            <GithubFilled />
           </a>
         </Tooltip>
         <Tooltip placement="top" title="LinkedIn">
@@ -35,20 +34,17 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             href="https://pk.linkedin.com/in/ahmed-abdullah-74a414172">
-            <span>
-              <LinkedinFilled />
-            </span>
+            <LinkedinFilled />
           </a>
         </Tooltip>
       </div>
-      <style jsx>{`
+      <style global jsx>{`
         .code-icon {
           color: white !important;
           background: #1890ff;
           border-radius: 3px;
           padding: 2px 3px 4px;
           height: 22px;
-          margin-top: 8px;
           display: flex;
           align-items: center;
           font-size: 16px;
@@ -70,14 +66,13 @@ const Footer = () => {
         }
         .dev-name {
           font-size: 16px;
-          margin-bottom: 2px;
+          margin-bottom: 10px;
         }
         .dev-name > span {
-          font-weight: 500
+          font-weight: 500;
         }
         .icons-container {
           display: flex;
-          height: 35px;
         }
         .icons-container span {
           color: #1890ff;

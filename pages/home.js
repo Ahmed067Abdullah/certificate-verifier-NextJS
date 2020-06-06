@@ -36,7 +36,7 @@ const Home = () => {
               </li>
               <li>
                 <p className='bullet-point'>
-                  For frontend of the application, the famous UI library of JS, i.e <span>React</span> is used.
+                  For frontend of the application, <span>NextJS</span> is used.
                 </p>
               </li>
               <li>

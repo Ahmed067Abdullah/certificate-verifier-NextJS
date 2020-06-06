@@ -151,7 +151,8 @@ const StarredCertificates = ({ router, setUser, user }) => {
           {certificatesJSX}
         </div>
       </div>
-      <style jsx>{`
+      <div className='icon-container' />
+      <style global jsx>{`
       .certificates-container {
         width: 100vw;
         overflow-x: hidden;
