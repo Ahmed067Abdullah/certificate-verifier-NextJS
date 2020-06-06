@@ -1,1 +1,1 @@
-export const infuraEndpoint = process.env.infuraEndpoint;
+export const infuraEndpoint = 'https://ropsten.infura.io/v3/95cb66a1c1cf4ca4bda86c57a27c2f38';
