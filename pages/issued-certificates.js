@@ -75,10 +75,10 @@ const IssuedCertificates = ({ router, web3Status }) => {
                 <Result
                   status={404}
                   title='No certificate found'
-                  subTitle={<p>Click
-                <Link href="/award-certificate">
-                      <a>here</a>
-                    </Link> to issue your first certificate</p>}
+                  subTitle={<p>Click 
+                  <Link href="/award-certificate">
+                    <a>here</a>
+                  </Link> to issue your first certificate</p>}
                 />
               </div>}
           </div>
