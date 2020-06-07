@@ -24,7 +24,7 @@ const IssuedCertificates = ({ router, web3Status }) => {
         window.ethereum.removeAllListeners();
       }
     }
-  }, []);
+  }, [web3Status]);
 
   const callGetIssuedCertificates = () => {
     getIssuedCertificates()
@@ -75,9 +75,9 @@ const IssuedCertificates = ({ router, web3Status }) => {
                 <Result
                   status={404}
                   title='No certificate found'
-                  subTitle={<p>Click 
+                  subTitle={<p>Click
                   <Link href="/award-certificate">
-                    <a>here</a>
+                    <a> here</a>
                   </Link> to issue your first certificate</p>}
                 />
               </div>}

@@ -67,10 +67,25 @@ const QueryCertificate = ({ router }) => {
           </Card>
         </div>
       </div>
-      <style jsx>{`
+      <style global jsx>{`
       .card {
         width: 700px;
         margin: 100px auto 0;
+      }
+      @media(max-width:768px) {
+        .card {
+          width: 90%;
+          margin: 100px auto 0;
+        }
+        .card .ant-card-head {
+          padding: 0 12px
+        }
+        .card .ant-card-body {
+          padding: 12px
+        }
+        .card .ant-col-offset-6 {
+          margin-left: 0;
+        }
       }
       `}</style>
     </Layout>

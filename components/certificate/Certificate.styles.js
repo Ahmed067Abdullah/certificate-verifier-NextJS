@@ -1,18 +1,28 @@
 const styleSheet = (primary = "#24C4D4", secondary = "gold") => {
   return {
     'certificate-container': {
+      '@media(max-width:768px)': {
+        marginTop: '65px',
+        padding: '30px 0px 30px'
+      },
       border: `10px solid ${primary}`,
       maxWidth: '950px',
       width: '95vw',
       minWidth: '300px',
       padding: '40px 40px 30px',
       position: 'relative',
-      margin: 'auto'
+      margin: 'auto',
+      marginTop: '20px'
     },
     'styled-div': {
+      '@media(max-width:768px)': {
+        width: '30px',
+        height: '56.25px',
+        left: '11.25px',
+      },
       '& > img': {
         width: "74%",
-        marginTop: "10px"
+        marginTop: "4px"
       },
       backgroundColor: primary,
       width: '80px',
@@ -27,12 +37,22 @@ const styleSheet = (primary = "#24C4D4", secondary = "gold") => {
       alignItems: 'center',
     },
     'main-content': {
+      '@media(max-width:768px)': {
+        width: "90%",
+      },
       textAlign: "center",
       width: "80%",
       margin: "auto"
     },
     "main-heading": {
+      '@media(max-width:768px)': {
+        fontSize: "18px",
+        marginBottom: "30px"
+      },
       "& > span": {
+        '@media(max-width:768px)': {
+          fontSize: "36px",
+        },
         display: "block",
         fontSize: "48px",
         fontWeight: "500"
@@ -42,7 +62,13 @@ const styleSheet = (primary = "#24C4D4", secondary = "gold") => {
       marginBottom: "40px"
     },
     'certificate-text': {
+      '@media(max-width:768px)': {
+        fontSize: "18px"
+      },
       '& .name': {
+        '@media(max-width:768px)': {
+          fontSize: "48px"
+        },
         color: primary,
         display: "block",
         fontSize: "64px",
@@ -58,6 +84,10 @@ const styleSheet = (primary = "#24C4D4", secondary = "gold") => {
       fontSize: "24px"
     },
     'certificate-footer': {
+      '@media(max-width:768px)': {
+        fontSize: "15px",
+        marginTop: "30px"
+      },
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
@@ -74,6 +104,9 @@ const styleSheet = (primary = "#24C4D4", secondary = "gold") => {
       margin: "0"
     },
     'certificate-uuid': {
+      '@media(max-width:768px)': {
+        fontSize: "10.5px",
+      },
       textAlign: "center",
       fontSize: "14px",
       fontWeight: "300",

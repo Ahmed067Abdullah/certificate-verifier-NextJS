@@ -131,6 +131,11 @@ const ViewCertificate = ({ router }) => {
         left: 20px;
         padding-left: 10px;
       }
+      @media(max-width:768px) {
+        .back-btn {
+          left: 2.5vw;
+        }
+      }
       .btns-container {
         align-items: center;
         display: flex;
