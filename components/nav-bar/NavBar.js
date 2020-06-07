@@ -52,7 +52,7 @@ const NavBar = ({ user, callLogout, router }) => {
           .navbar-container {
             position: fixed;
             width: 100%;
-            z-index: 2;
+            z-index: 3;
           }
       `}</style>
     </div>

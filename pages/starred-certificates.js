@@ -108,16 +108,16 @@ const StarredCertificates = ({ router, setUser, user }) => {
 
   let certificatesJSX;
   if (loading) {
-    certificatesJSX = <Row gutter={[16, 24]}>
-      {Array(8).fill().map((c, i) => <Col span={6} key={i}>
+    certificatesJSX = <Row gutter={[8, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
+      {Array(8).fill().map((c, i) => <Col xs={24} sm={12} md={8} lg={6} key={i}>
         <Card loading={true} />
       </Col>)}
     </Row>;
   } else if (showAuthModal) {
     certificatesJSX = <AuthModal onClose={userAuthenticated} />;
   } else if (starred.length) {
-    certificatesJSX = <Row gutter={[16, 24]}>
-      {starred.map(c => <Col span={6} key={c.uuid}>
+    certificatesJSX = <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
+      {starred.map(c => <Col xs={24} sm={12} md={8} lg={6} key={c.uuid} style={{ 'width': '100%' }}>
         <Card style={{ 'position': 'relative' }}>
           <p>Awarded to: <span className='candidate-name'>{c.candidateName}</span></p>
           <div className='icon-container'>
@@ -154,10 +154,14 @@ const StarredCertificates = ({ router, setUser, user }) => {
       <div className='icon-container' />
       <style global jsx>{`
       .certificates-container {
-        width: 100vw;
         overflow-x: hidden;
         padding: 16px 24px;
         width: 100%;
+      }
+      @media(max-width:768px) {
+        .certificates-container {
+          padding: 16px 12px;
+        }
       }
       .candidate-name {
         font-weight: 500;
