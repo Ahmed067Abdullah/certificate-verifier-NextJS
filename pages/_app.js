@@ -1,6 +1,7 @@
 import App from 'next/app';
 import Head from 'next/head'
 import React from 'react';
+import { Result } from 'antd';
 import { wrapper } from "../store";
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
@@ -13,11 +14,27 @@ class MyApp extends App {
 
   componentDidMount() {
     this.setupApplication();
+
+    if (window.ethereum) {
+      window.ethereum.on('networkChanged', networkId => {
+        if (networkId !== 3) {
+          this.setState({ web3Status: 4 });
+        } else {
+          enableEthereum();
+        }
+      });
+    }
   }
 
   setupApplication = async () => {
     const { setChecked, setUser } = this.props;
+    const { ethereum } = window;
     try {
+      if (!ethereum) {
+        this.setState({ web3Status: 3 });
+      } else if (ethereum.networkVersion !== "3") {
+        this.setState({ web3Status: 4 });
+      }
       let res = await verifyMe();
       if (res) {
         setUser(res.data);
@@ -26,18 +43,20 @@ class MyApp extends App {
       localStorage.removeItem("certificate-verifier-token");
     } finally {
       setChecked(true);
-      if (window.ethereum) {
-        window.ethereum.enable()
-          .then(() => {
-            this.setState({ web3Status: 1 });
-          })
-          .catch(() => {
-            this.setState({ web3Status: 2 });
-          })
-      } else {
-        this.setState({ web3Status: 3 });
+      if (ethereum && ethereum.networkVersion === "3") {
+        this.enableEthereum();
       }
     }
+  }
+
+  enableEthereum = () => {
+    window.ethereum.enable()
+      .then(() => {
+        this.setState({ web3Status: 1 });
+      })
+      .catch(() => {
+        this.setState({ web3Status: 2 });
+      })
   }
 
   render() {
@@ -48,7 +67,19 @@ class MyApp extends App {
         <Head>
           <title>Certificate Verifier</title>
         </Head>
-        <Component web3Status={web3Status} />
+        {web3Status === 4
+          ? <div style={{
+            'display': 'flex',
+            'justifyContent': 'center',
+            'height': '100vh',
+            'alignItems': 'center'
+          }}><Result
+              status={403}
+              title='Network issue'
+              subTitle="Please select Ropsten Test Network in metamask extension"
+            />
+          </div>
+          : <Component web3Status={web3Status} />}
       </>
     );
   }
