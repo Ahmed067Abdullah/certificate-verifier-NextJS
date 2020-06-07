@@ -17,7 +17,7 @@ class MyApp extends App {
 
     if (window.ethereum) {
       window.ethereum.on('networkChanged', networkId => {
-        if (networkId !== 3) {
+        if (networkId != 3) {
           this.setState({ web3Status: 4 });
         } else {
           this.enableEthereum();
