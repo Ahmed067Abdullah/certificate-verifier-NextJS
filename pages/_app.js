@@ -12,11 +12,7 @@ class MyApp extends App {
   state = { web3Status: 0 };
 
   componentDidMount() {
-    if (window.ethereum) {
-      this.setupApplication();
-    } else {
-      this.setState({ web3Status: 3 });
-    }
+    this.setupApplication();
   }
 
   setupApplication = async () => {
@@ -24,21 +20,23 @@ class MyApp extends App {
     try {
       let res = await verifyMe();
       if (res) {
-        setUser({ ...res.data, checked: true });
-      } else {
-        setChecked(true);
+        setUser(res.data);
       }
     } catch (e) {
-      setChecked(true);
       localStorage.removeItem("certificate-verifier-token");
     } finally {
-      window.ethereum.enable()
-        .then(() => {
-          this.setState({ web3Status: 1 });
-        })
-        .catch(() => {
-          this.setState({ web3Status: 2 });
-        })
+      setChecked(true);
+      if (window.ethereum) {
+        window.ethereum.enable()
+          .then(() => {
+            this.setState({ web3Status: 1 });
+          })
+          .catch(() => {
+            this.setState({ web3Status: 2 });
+          })
+      } else {
+        this.setState({ web3Status: 3 });
+      }
     }
   }
 
