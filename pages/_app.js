@@ -20,7 +20,7 @@ class MyApp extends App {
         if (networkId !== 3) {
           this.setState({ web3Status: 4 });
         } else {
-          enableEthereum();
+          this.enableEthereum();
         }
       });
     }
