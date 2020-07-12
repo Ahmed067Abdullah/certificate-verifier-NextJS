@@ -1,5 +1,5 @@
 import contract from '../../shared/contract';
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import momentTz from 'moment-timezone';
 import request from '../../shared/request';
